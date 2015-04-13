@@ -3,8 +3,13 @@
 # test GET, POST, and PUT endpoints
 
 url=$1
-total_insertions=$2
+#total_insertions=$2
 
+if [ $# -ne 1 ]
+then
+  echo "please provide api url"
+  exit 1
+else
 echo "Please enter your choice: "
 menu=("GET All Records" "GET Record By ID" "POST Record" "PUT Record", "Populate Database")
 select opt in "${menu[@]}"
@@ -41,10 +46,14 @@ do
     "Populate Database")
       echo " "
       echo "POST: Populate Database"
-      bash add.sh ${total_insertions} "${url}"
+      # 1st version of script adder
+      #bash add.sh ${total_insertions} "${url}"
+      # new adder script
+      bash ./helper_scripts/parse_csv.sh "${url}"
       ;;
     *)
       break
       ;;
   esac
 done
+fi
