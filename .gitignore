@@ -1,8 +1,14 @@
 # Virtual environment
 cs18api
 
+# Data Sets
+BMW.csv
+json.txt
+
 #pycharm auto generated files
 .idea
+
+#Mac Files
 .DS_Store
 
 # database file
