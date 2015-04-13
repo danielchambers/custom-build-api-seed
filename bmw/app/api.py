@@ -1,12 +1,8 @@
-import os
 from flask import Flask, url_for, jsonify, request
 from flask.ext.sqlalchemy import SQLAlchemy
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-db_path = os.path.join(basedir, '../data.sqlite')
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://daniel@localhost/mydb'
 
 db = SQLAlchemy(app)
 
@@ -15,10 +11,18 @@ class ValidationError(ValueError):
     pass
 
 
-class Student(db.Model):
-    __tablename__ = 'students'
+class BMWReddit(db.Model):
+    __tablename__ = 'bmwreddit'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
+    date = db.Column(db.String(50))
+    score = db.Column(db.Integer)
+    domain = db.Column(db.String(100))
+    title = db.Column(db.String(250))
+    author = db.Column(db.String(50))
+    upVote = db.Column(db.Integer)
+    downVote = db.Column(db.Integer)
+    comments = db.Column(db.Integer)
 
     def get_url(self):
         return url_for('get_student', id=self.id, _external=True)
@@ -26,39 +30,52 @@ class Student(db.Model):
     def export_data(self):
         return {
             'self_url': self.get_url(),
-            'name': self.name
+            'date': self.date,
+            'score': self.score,
+            'domain': self.domain,
+            'title': self.title,
+            'author': self.author,
+            'upVote': self.upVote,
+            'downVote': self.downVote,
+            'comments': self.comments
         }
 
     def import_data(self, data):
         try:
-            self.name = data['name']
+            self.date = data['date']
+            self.score = data['score']
+            self.domain = data['domain']
+            self.title = data['title']
+            self.author = data['author']
+            self.upVote = data['upVote']
+            self.downVote = data['downVote']
+            self.comments = data['comments']
         except KeyError as e:
             raise ValidationError('Invalid student: missing ' + e.args[0])
         return self
 
 
-@app.route('/students/', methods=['GET'])
+@app.route('/bmw/', methods=['GET'])
 def get_students():
-    return jsonify({'students': [student.get_url() for student in
-                                  Student.query.all()]})
+    return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
-@app.route('/students/<int:id>', methods=['GET'])
+@app.route('/bmw/<int:id>', methods=['GET'])
 def get_student(id):
-    return jsonify(Student.query.get_or_404(id).export_data())
+    return jsonify(BMWReddit.query.get_or_404(id).export_data())
 
-@app.route('/students/', methods=['POST'])
+@app.route('/bmw/', methods=['POST'])
 def new_student():
-    student = Student()
-    student.import_data(request.json)
-    db.session.add(student)
+    post = BMWReddit()
+    post.import_data(request.json)
+    db.session.add(post)
     db.session.commit()
-    return jsonify({}), 201, {'Location': student.get_url()}
+    return jsonify({}), 201, {'Location': post.get_url()}
 
-@app.route('/students/<int:id>', methods=['PUT'])
+@app.route('/bmw/<int:id>', methods=['PUT'])
 def edit_student(id):
-    student = Student.query.get_or_404(id)
-    student.import_data(request.json)
-    db.session.add(student)
+    post = BMWReddit.query.get_or_404(id)
+    post.import_data(request.json)
+    db.session.add(post)
     db.session.commit()
     return jsonify({})
 
