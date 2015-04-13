@@ -3,5 +3,7 @@ cs18api
 
 #pycharm auto generated files
 .idea
+.DS_Store
 
-students/data.sqlite
+# database file
+cs18api/data.sqlite
