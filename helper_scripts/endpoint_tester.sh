@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the different endpoints
+# test GET, POST, and PUT endpoints
 
 url=$1
 total_insertions=$2
