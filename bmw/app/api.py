@@ -1,9 +1,12 @@
-from flask import Flask, url_for, jsonify, request
+from flask import Flask, url_for, jsonify, request, render_template, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.bootstrap import Bootstrap
+from flask.ext.paginate import Pagination
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://daniel@localhost/mydb'
 
+bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 
@@ -55,13 +58,41 @@ class BMWReddit(db.Model):
         return self
 
 
-@app.route('/bmw/', methods=['GET'])
+@app.route('/', methods=['GET'])
+def index():
+    return redirect("/bmw/api/", code=302)
+
+
+@app.route('/bmw/api/', methods=['GET'])
 def get_students():
     return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
+
+@app.route('/bmw/wrostpost', methods=['GET'])
+def worst_posts():
+    bmw = []
+    results = BMWReddit.query.order_by(BMWReddit.upVote.asc()).limit(10)
+    for rbmw in results:
+        bmw.append(rbmw.export_data())
+    # print(mydata)
+    return render_template('index.html', bmw=bmw)
+
+
+@app.route('/bmw/', methods=['GET'])
+def get_students_api():
+    bmw = BMWReddit.query.all()
+    return render_template('index.html', bmw=bmw)
+
+
 @app.route('/bmw/<int:id>', methods=['GET'])
 def get_student(id):
+    return render_template('singlepage.html', bmw=BMWReddit.query.get_or_404(id).export_data())
+
+
+@app.route('/bmw/api/<int:id>', methods=['GET'])
+def get_student_api(id):
     return jsonify(BMWReddit.query.get_or_404(id).export_data())
+
 
 @app.route('/bmw/', methods=['POST'])
 def new_student():
@@ -71,6 +102,7 @@ def new_student():
     db.session.commit()
     return jsonify({}), 201, {'Location': post.get_url()}
 
+
 @app.route('/bmw/<int:id>', methods=['PUT'])
 def edit_student(id):
     post = BMWReddit.query.get_or_404(id)
@@ -78,6 +110,11 @@ def edit_student(id):
     db.session.add(post)
     db.session.commit()
     return jsonify({})
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
 
 
 if __name__ == '__main__':

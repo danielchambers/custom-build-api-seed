@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Reddit BMW{% endblock %}
+
+{% block body %}
+<div class="container">
+        <h1>Student Info</h1>
+        <table class="table table-hover">
+    <tr>
+        <th>Author</th>
+        <th>Title</th>
+        <th>Comments</th>
+    </tr>
+    {% for redditPost in bmw %}
+    <tr>
+        <td>{{ redditPost.author }}</td>
+        <td>{{ redditPost.title }}</td>
+        <td>{{ redditPost.comments }}</td>
+    </tr>
+    {% endfor %}
+        </table>
+    </div>
+    <!-- sad -->
+{% endblock %}
+
+{% block jsFiles %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endblock %}

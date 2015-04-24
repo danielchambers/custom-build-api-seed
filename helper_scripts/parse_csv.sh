@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# useage: bash ./helper_scripts/parse_csv.sh
+# run script
+# bash ./helper_scripts/parse_csv.sh
 
 if [ -f ./data/json.txt ]
 then
