@@ -59,9 +59,11 @@ class BMWReddit(db.Model):
 def get_students():
     return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
-@app.route('/bmw/<int:id>', methods=['GET'])
-def get_student(id):
-    return jsonify(BMWReddit.query.get_or_404(id).export_data())
+
+@app.route('/bmw/<int:user_id>', methods=['GET'])
+def get_student(user_id):
+    return jsonify(BMWReddit.query.get_or_404(user_id).export_data())
+
 
 @app.route('/bmw/', methods=['POST'])
 def new_student():
@@ -69,15 +71,16 @@ def new_student():
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({}), 201, {'Location': post.get_url()}
+    return jsonify({"status": "new record added"}), 201, {'Location': post.get_url()}
 
-@app.route('/bmw/<int:id>', methods=['PUT'])
-def edit_student(id):
-    post = BMWReddit.query.get_or_404(id)
+
+@app.route('/bmw/<int:user_id>', methods=['PUT'])
+def edit_student(user_id):
+    post = BMWReddit.query.get_or_404(user_id)
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({})
+    return jsonify({"status": "record updated"})
 
 
 if __name__ == '__main__':
