@@ -104,13 +104,13 @@ def get_students_api():
 
 
 @app.route('/bmw/<int:id>', methods=['GET'])
-def get_student(id):
-    return render_template('singlepage.html', bmw=BMWReddit.query.get_or_404(id).export_data())
+def get_student(user_id):
+    return render_template('singlepage.html', bmw=BMWReddit.query.get_or_404(user_id).export_data())
 
 
 @app.route('/bmw/api/<int:id>', methods=['GET'])
-def get_student_api(id):
-    return jsonify(BMWReddit.query.get_or_404(id).export_data())
+def get_student_api(user_id):
+    return jsonify(BMWReddit.query.get_or_404(user_id).export_data())
 
 
 @app.route('/bmw/', methods=['POST'])
@@ -119,16 +119,16 @@ def new_student():
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({}), 201, {'Location': post.get_url()}
+    return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
 
 
 @app.route('/bmw/<int:id>', methods=['PUT'])
-def edit_student(id):
-    post = BMWReddit.query.get_or_404(id)
+def edit_student(user_id):
+    post = BMWReddit.query.get_or_404(userid)
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({})
+    return jsonify({"status": "record updated"})
 
 
 @app.errorhandler(404)
