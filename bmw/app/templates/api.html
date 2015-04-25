@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Reddit BMW{% endblock %}
+
+{% block body %}
+<div class="container">
+        <h1>API</h1>
+        <div class="page-header">
+            <h1>GET</h1>
+            <div class="well">
+                curl -X GET http://127.0.0.1:5000/bmw/
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>POST</h1>
+            <code>
+                curl -X POST -h "Content-type: application/json" -d "<kbd>json</kbd>" http://127.0.0.1:5000/bmw/
+            </code>
+            <div class="well">
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>PUT</h1>
+            <div class="well">
+
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>GET</h1>
+            <div class="well">
+
+            </div>
+        </div>
+    </div>
+    <!-- sad -->
+{% endblock %}
+
+{% block jsFiles %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endblock %}

@@ -1,12 +1,9 @@
 from flask import Flask, url_for, jsonify, request, render_template, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.paginate import Pagination
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://daniel@localhost/mydb'
 
-bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 
@@ -60,22 +57,44 @@ class BMWReddit(db.Model):
 
 @app.route('/', methods=['GET'])
 def index():
-    return redirect("/bmw/api/", code=302)
+    return redirect("/bmw/", code=302)
 
 
-@app.route('/bmw/api/', methods=['GET'])
+@app.route('/bmw/posts', methods=['GET'])
 def get_students():
     return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
 
-@app.route('/bmw/wrostpost', methods=['GET'])
-def worst_posts():
+@app.route('/bmw/api/', methods=['GET'])
+def get_api():
+    return render_template('api.html')
+
+
+@app.route('/bmw/mostcomments', methods=['GET'])
+def most_comments():
     bmw = []
-    results = BMWReddit.query.order_by(BMWReddit.upVote.asc()).limit(10)
+    results = BMWReddit.query.order_by(BMWReddit.comments.desc()).limit(10)
     for rbmw in results:
         bmw.append(rbmw.export_data())
-    # print(mydata)
-    return render_template('index.html', bmw=bmw)
+    return render_template('mostcomments.html', bmw=bmw)
+
+
+@app.route('/bmw/highestscore', methods=['GET'])
+def highest_score():
+    bmw = []
+    results = BMWReddit.query.order_by(BMWReddit.score.desc()).limit(10)
+    for rbmw in results:
+        bmw.append(rbmw.export_data())
+    return render_template('highestscore.html', bmw=bmw)
+
+
+@app.route('/bmw/lowestscore', methods=['GET'])
+def lowest_score():
+    bmw = []
+    results = BMWReddit.query.order_by(BMWReddit.score.asc()).limit(10)
+    for rbmw in results:
+        bmw.append(rbmw.export_data())
+    return render_template('lowestscore.html', bmw=bmw)
 
 
 @app.route('/bmw/', methods=['GET'])

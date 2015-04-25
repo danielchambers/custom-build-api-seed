@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container">
-        <h1>User</h1>
+        <h1>Lowest Score</h1>
         <table class="table table-hover">
     <tr>
         <th>Author</th>
@@ -14,14 +14,16 @@
         <th>Up Votes</th>
         <th>Down Votes</th>
     </tr>
+    {% for redditPost in bmw %}
     <tr>
-        <td>{{ bmw.author }}</td>
-        <td>{{ bmw.title }}</td>
-        <td>{{ bmw.comments }}</td>
-        <td>{{ bmw.score }}</td>
-        <td>{{ bmw.upVote }}</td>
-        <td>{{ bmw.downVote }}</td>
+        <td>{{ redditPost.author }}</td>
+        <td>{{ redditPost.title }}</td>
+        <td>{{ redditPost.comments }}</td>
+        <td>{{ redditPost.score }}</td>
+        <td>{{ redditPost.upVote }}</td>
+        <td>{{ redditPost.downVote }}</td>
     </tr>
+    {% endfor %}
         </table>
     </div>
     <!-- sad -->

@@ -10,6 +10,9 @@
         <th>Author</th>
         <th>Title</th>
         <th>Comments</th>
+        <th>Score</th>
+        <th>Up Votes</th>
+        <th>Down Votes</th>
     </tr>
     {% for redditPost in bmw %}
     <tr>
@@ -24,5 +27,6 @@
 {% endblock %}
 
 {% block jsFiles %}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 {% endblock %}
