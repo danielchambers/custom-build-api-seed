@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Reddit BMW
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>API</h1>
+        <div class="row">
+            <h1><small>Get All Records</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">GET</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/">
+            </div>
+        </div>
+        <div class="row">
+            <h1><small>Get One Record</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">GET</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/{USER ID}">
+            </div>
+        </div>
+        <div class="row">
+            <h1><small>Add New Record</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">POST</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/{USER ID}">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsFiles %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endblock %}
