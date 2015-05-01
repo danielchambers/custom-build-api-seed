@@ -108,14 +108,8 @@ def get_students():
     return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
 
-<<<<<<< HEAD
-@app.route('/bmw/<int:user_id>', methods=['GET'])
-def get_student(user_id):
-=======
 @app.route('/bmw/api/<int:user_id>', methods=['GET'])
 def get_student_api(user_id):
-    print(user_id)
->>>>>>> chambers.pagesAndTemplates
     return jsonify(BMWReddit.query.get_or_404(user_id).export_data())
 
 
@@ -125,11 +119,7 @@ def new_student():
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-<<<<<<< HEAD
-    return jsonify({"status": "new record added"}), 201, {'Location': post.get_url()}
-=======
     return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
->>>>>>> chambers.pagesAndTemplates
 
 
 @app.route('/bmw/<int:user_id>', methods=['PUT'])
@@ -139,14 +129,11 @@ def edit_student(user_id):
     db.session.add(post)
     db.session.commit()
     return jsonify({"status": "record updated"})
-<<<<<<< HEAD
-=======
 
 
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html')
->>>>>>> chambers.pagesAndTemplates
 
 
 if __name__ == '__main__':
