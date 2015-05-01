@@ -113,7 +113,7 @@ def get_student_api(user_id):
     return jsonify(BMWReddit.query.get_or_404(user_id).export_data())
 
 
-@app.route('/bmw/', methods=['POST'])
+@app.route('/bmw/api/', methods=['POST'])
 def new_student():
     post = BMWReddit()
     post.import_data(request.json)
@@ -122,7 +122,7 @@ def new_student():
     return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
 
 
-@app.route('/bmw/<int:user_id>', methods=['PUT'])
+@app.route('/bmw/api/<int:user_id>', methods=['PUT'])
 def edit_student(user_id):
     post = BMWReddit.query.get_or_404(user_id)
     post.import_data(request.json)
