@@ -1,35 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}Reddit BMW{% endblock %}
+{% block title %}
+    r/BMW/ Highest Score
+{% endblock %}
 
 {% block body %}
-<div class="container">
-        <h1>Highest Score</h1>
-        <table class="table table-hover">
-    <tr>
-        <th>Author</th>
-        <th>Title</th>
-        <th>Comments</th>
-        <th>Score</th>
-        <th>Up Votes</th>
-        <th>Down Votes</th>
-    </tr>
-    {% for redditPost in bmw %}
-    <tr>
-        <td>{{ redditPost.author }}</td>
-        <td>{{ redditPost.title }}</td>
-        <td>{{ redditPost.comments }}</td>
-        <td>{{ redditPost.score }}</td>
-        <td>{{ redditPost.upVote }}</td>
-        <td>{{ redditPost.downVote }}</td>
-    </tr>
-    {% endfor %}
-        </table>
+    <div class="container">
+        <div class="row">
+            <h1>Highest Score</h1>
+        </div>
+        <div class="row">
+            <h1><small>Filtering</small></h1>
+            <form>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="search" placeholder="Keyword">
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <h1><small>Results</small></h1>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Comments</th>
+                        <th>Score</th>
+                        <th>Up Votes</th>
+                        <th>Down Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for redditPost in bmw %}
+                    <tr>
+                        <td>{{ redditPost.author }}</td>
+                        <td>{{ redditPost.title }}</td>
+                        <td>{{ redditPost.comments }}</td>
+                        <td>{{ redditPost.score }}</td>
+                        <td>{{ redditPost.upVote }}</td>
+                        <td>{{ redditPost.downVote }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- sad -->
 {% endblock %}
 
 {% block jsFiles %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static',filename='js/quicksearch.js') }}"></script>
+    <script type="text/javascript">
+    $('input#search').quicksearch('table tbody tr');
+    </script>
 {% endblock %}

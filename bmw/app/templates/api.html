@@ -1,41 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}Reddit BMW{% endblock %}
+{% block title %}
+    Reddit BMW
+{% endblock %}
 
 {% block body %}
-<div class="container">
+    <div class="container">
         <h1>API</h1>
-        <div class="page-header">
-            <h1>GET</h1>
-            <div class="well">
-                curl -X GET http://127.0.0.1:5000/bmw/
+        <div class="row">
+            <h1><small>Get All Records</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">GET</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/">
             </div>
         </div>
-
-        <div class="page-header">
-            <h1>POST</h1>
-            <code>
-                curl -X POST -h "Content-type: application/json" -d "<kbd>json</kbd>" http://127.0.0.1:5000/bmw/
-            </code>
-            <div class="well">
+        <div class="row">
+            <h1><small>Get One Record</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">GET</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/{USER ID}">
             </div>
         </div>
-
-        <div class="page-header">
-            <h1>PUT</h1>
-            <div class="well">
-
-            </div>
-        </div>
-
-        <div class="page-header">
-            <h1>GET</h1>
-            <div class="well">
-
+        <div class="row">
+            <h1><small>Add New Record</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">POST</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/{USER ID}">
             </div>
         </div>
     </div>
-    <!-- sad -->
 {% endblock %}
 
 {% block jsFiles %}

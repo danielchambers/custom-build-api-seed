@@ -3,7 +3,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://daniel@localhost/mydb'
-
 db = SQLAlchemy(app)
 
 
@@ -13,7 +12,6 @@ class ValidationError(ValueError):
 
 class BMWReddit(db.Model):
     __tablename__ = 'bmwreddit'
-
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(50))
     score = db.Column(db.Integer)
@@ -25,7 +23,7 @@ class BMWReddit(db.Model):
     comments = db.Column(db.Integer)
 
     def get_url(self):
-        return url_for('get_student', id=self.id, _external=True)
+        return url_for('get_student', user_id=self.id, _external=True)
 
     def export_data(self):
         return {
@@ -60,17 +58,18 @@ def index():
     return redirect("/bmw/", code=302)
 
 
-@app.route('/bmw/posts', methods=['GET'])
-def get_students():
-    return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
+@app.route('/bmw/', methods=['GET'])
+def get_students_api():
+    bmw = BMWReddit.query.all()
+    return render_template('index.html', bmw=bmw)
 
 
-@app.route('/bmw/api/', methods=['GET'])
-def get_api():
-    return render_template('api.html')
+@app.route('/bmw/post/', methods=['GET'])
+def get_student():
+    return render_template('singlepage.html')
 
 
-@app.route('/bmw/mostcomments', methods=['GET'])
+@app.route('/bmw/mostcomments/', methods=['GET'])
 def most_comments():
     bmw = []
     results = BMWReddit.query.order_by(BMWReddit.comments.desc()).limit(10)
@@ -79,7 +78,7 @@ def most_comments():
     return render_template('mostcomments.html', bmw=bmw)
 
 
-@app.route('/bmw/highestscore', methods=['GET'])
+@app.route('/bmw/highestscore/', methods=['GET'])
 def highest_score():
     bmw = []
     results = BMWReddit.query.order_by(BMWReddit.score.desc()).limit(10)
@@ -88,7 +87,7 @@ def highest_score():
     return render_template('highestscore.html', bmw=bmw)
 
 
-@app.route('/bmw/lowestscore', methods=['GET'])
+@app.route('/bmw/lowestscore/', methods=['GET'])
 def lowest_score():
     bmw = []
     results = BMWReddit.query.order_by(BMWReddit.score.asc()).limit(10)
@@ -97,19 +96,21 @@ def lowest_score():
     return render_template('lowestscore.html', bmw=bmw)
 
 
-@app.route('/bmw/', methods=['GET'])
-def get_students_api():
-    bmw = BMWReddit.query.all()
-    return render_template('index.html', bmw=bmw)
+##### API
+
+@app.route('/bmw/api/documentation/', methods=['GET'])
+def get_api():
+    return render_template('api.html')
 
 
-@app.route('/bmw/<int:id>', methods=['GET'])
-def get_student(user_id):
-    return render_template('singlepage.html', bmw=BMWReddit.query.get_or_404(user_id).export_data())
+@app.route('/bmw/api/', methods=['GET'])
+def get_students():
+    return jsonify({'posts': [post.get_url() for post in BMWReddit.query.all()]})
 
 
-@app.route('/bmw/api/<int:id>', methods=['GET'])
+@app.route('/bmw/api/<int:user_id>', methods=['GET'])
 def get_student_api(user_id):
+    print(user_id)
     return jsonify(BMWReddit.query.get_or_404(user_id).export_data())
 
 
@@ -122,9 +123,9 @@ def new_student():
     return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
 
 
-@app.route('/bmw/<int:id>', methods=['PUT'])
+@app.route('/bmw/<int:user_id>', methods=['PUT'])
 def edit_student(user_id):
-    post = BMWReddit.query.get_or_404(userid)
+    post = BMWReddit.query.get_or_404(user_id)
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()

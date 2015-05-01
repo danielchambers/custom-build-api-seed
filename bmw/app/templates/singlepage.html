@@ -1,33 +1,81 @@
 {% extends "base.html" %}
 
-{% block title %}Reddit BMW{% endblock %}
+{% block title %}
+    r/BMW/ Post Search
+{% endblock %}
 
 {% block body %}
-<div class="container">
-        <h1>User</h1>
-        <table class="table table-hover">
-    <tr>
-        <th>Author</th>
-        <th>Title</th>
-        <th>Comments</th>
-        <th>Score</th>
-        <th>Up Votes</th>
-        <th>Down Votes</th>
-    </tr>
-    <tr>
-        <td>{{ bmw.author }}</td>
-        <td>{{ bmw.title }}</td>
-        <td>{{ bmw.comments }}</td>
-        <td>{{ bmw.score }}</td>
-        <td>{{ bmw.upVote }}</td>
-        <td>{{ bmw.downVote }}</td>
-    </tr>
-        </table>
+    <div class="container">
+        <div class="row">
+            <h1>Search BY ID</h1>
+        </div>
+        <div class="row">
+            <h1><small>Search</small></h1>
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="user-id" placeholder="User ID">
+                    <button id="user-id-submit" type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <h1><small>Results</small></h1>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Comments</th>
+                        <th>Score</th>
+                        <th>Up Votes</th>
+                        <th>Down Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="author"></td>
+                        <td id="title"></td>
+                        <td id="comments"></td>
+                        <td id="score"></td>
+                        <td id="upvotes"></td>
+                        <td id="downvotes"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- sad -->
 {% endblock %}
 
 {% block jsFiles %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script>
+    $("#user-id-submit").click(function (e) {
+        var postId = $('#user-id').val();
+
+        e.preventDefault();
+        if (postId.length !== 0) {
+            var request = $.ajax({
+                url: "/bmw/api/" + postId,
+                method: "GET",
+                dataType: "json"
+            });
+
+            request.done(function (redditData) {
+                $("#author").text(redditData.author);
+                $("#title").text(redditData.title);
+                $("#comments").text(redditData.comments);
+                $("#score").text(redditData.score);
+                $("#upvotes").text(redditData.upVote);
+                $("#downvotes").text(redditData.downVote);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        } else {
+            alert("Input failed: no input");
+        }
+    });
+    </script>
 {% endblock %}
