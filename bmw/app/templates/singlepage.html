@@ -29,16 +29,18 @@
                         <th>Score</th>
                         <th>Up Votes</th>
                         <th>Down Votes</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr id="bmw-post">
                         <td id="author"></td>
                         <td id="title"></td>
                         <td id="comments"></td>
                         <td id="score"></td>
                         <td id="upvotes"></td>
                         <td id="downvotes"></td>
+                        <td><img style="visibility: hidden;" id="delete" src="http://i.imgur.com/zr1DDPW.png" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -68,14 +70,35 @@
                 $("#score").text(redditData.score);
                 $("#upvotes").text(redditData.upVote);
                 $("#downvotes").text(redditData.downVote);
+                $("#delete").attr("alt", postId);
+                $("#delete").css('visibility','visible');
             });
 
             request.fail(function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
+                alert("No post with that ID");
             });
         } else {
             alert("Input failed: no input");
         }
+    });
+
+    $("#delete").click(function (e) {
+        var deleteId = $('#delete').attr("alt");
+        e.preventDefault();
+        var request = $.ajax({
+            url: "/bmw/api/" + deleteId,
+            method: "DELETE",
+            dataType: "json"
+        });
+
+        request.done(function (redditData) {
+            console.log(redditData);
+            $("#bmw-post").fadeOut("slow");
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Delete Error: No ID");
+        });
     });
     </script>
 {% endblock %}
