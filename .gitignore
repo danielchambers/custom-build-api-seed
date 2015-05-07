@@ -14,5 +14,5 @@ json.txt
 # database file
 cs18api/data.sqlite
 
-#Vagrant
-.vagrant/
+# vagrant
+.vagrant
