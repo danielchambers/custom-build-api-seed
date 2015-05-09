@@ -48,7 +48,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script>
         $("#add-bmw").click(function (e) {
-            e.preventDefault();
+            //e.preventDefault();
             var formData = {
                 "date": Math.round(+new Date() / 1000),
                 "score": parseInt($("#score").val()),
@@ -69,13 +69,13 @@
             });
 
             request.done(function (redditData) {
+                alert("added!");
                 console.log(redditData);
             });
 
             request.fail(function (jqXHR, textStatus) {
                 console.log(textStatus);
                 console.log(jqXHR);
-                console.log("Delete Error: No ID");
             });
         });
         function onlyInts(identifier) {

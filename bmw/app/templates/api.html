@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Reddit BMW
+    API Documentation
 {% endblock %}
 
 {% block body %}
@@ -15,6 +15,19 @@
                 </span>
                 <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/">
             </div>
+            <h3>Response</h3>
+            <pre>
+{
+  "posts": [
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=1",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=2",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=4",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=7",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=8",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=9",
+    "http://127.0.0.1:5000/bmw/modifications/?user_id=10",
+    ...
+}</pre>
         </div>
         <div class="row">
             <h1><small>Get One Record</small></h1>
@@ -24,6 +37,19 @@
                 </span>
                 <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/{USER ID}">
             </div>
+            <h3>Response</h3>
+            <pre>
+{
+  "author": "l33pi3p3r",
+  "comments": 39,
+  "date": "1366954125.0",
+  "domain": "imgur.com",
+  "downVote": 15,
+  "score": 223,
+  "self_url": "http://127.0.0.1:5000/bmw/modifications/?user_id=37",
+  "title": "Clean",
+  "upVote": 238
+}</pre>
         </div>
         <div class="row">
             <h1><small>Add New Record</small></h1>
@@ -33,6 +59,54 @@
                 </span>
                 <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/{USER ID}">
             </div>
+            <h3>Header</h3>
+            <pre>
+"Content-type: application/json"</pre>
+            <h3>Data</h3>
+            <pre>
+{
+  "date": "1375967040.0",
+  "score": "96",
+  "domain": "imgur.com",
+  "title": "My Alpina B10 E39 4.6",
+  "author": "Naeplan",
+  "upVote": "116",
+  "downVote": "20",
+  "comments": "30"
+}</pre>
+            <h3>Response</h3>
+            <pre>
+{
+  "status": "record added"
+}</pre>
+        </div>
+        <div class="row">
+            <h1><small>Edit Record</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">PUT</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/{USER ID}">
+            </div>
+            <h3>Response</h3>
+            <pre>
+{
+  "status": "record updated"
+}</pre>
+        </div>
+        <div class="row">
+            <h1><small>Get All Records</small></h1>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">DELETE</button>
+                </span>
+                <input type="text" class="form-control" value="http://127.0.0.1:5000/bmw/api/{USER ID}">
+            </div>
+            <h3>Response</h3>
+            <pre>
+{
+  "status": "record deleted"
+}</pre>
         </div>
     </div>
 {% endblock %}
