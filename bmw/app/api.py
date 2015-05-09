@@ -69,6 +69,11 @@ def get_student():
     return render_template('singlepage.html')
 
 
+@app.route('/bmw/insert/', methods=['GET'])
+def insert_record():
+    return render_template('insert.html')
+
+
 @app.route('/bmw/mostcomments/', methods=['GET'])
 def most_comments():
     bmw = []
