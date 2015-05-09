@@ -64,9 +64,14 @@ def get_students_api():
     return render_template('index.html', bmw=bmw)
 
 
-@app.route('/bmw/post/', methods=['GET'])
+@app.route('/bmw/modifications/', methods=['GET'])
 def get_student():
     return render_template('singlepage.html')
+
+
+@app.route('/bmw/insert/', methods=['GET'])
+def insert_record():
+    return render_template('insert.html')
 
 
 @app.route('/bmw/mostcomments/', methods=['GET'])
@@ -114,21 +119,30 @@ def get_student_api(user_id):
 
 
 @app.route('/bmw/api/', methods=['POST'])
-def new_student():
+def new_record():
     post = BMWReddit()
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
+    return jsonify({"status": "record added"}), 201
 
 
 @app.route('/bmw/api/<int:user_id>', methods=['PUT'])
-def edit_student(user_id):
+def edit_record(user_id):
     post = BMWReddit.query.get_or_404(user_id)
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
     return jsonify({"status": "record updated"})
+
+
+@app.route('/bmw/api/<int:user_id>', methods=['DELETE'])
+def delete_record(user_id):
+    record = BMWReddit.query.get_or_404(user_id)
+    # print(record)
+    db.session.delete(record)
+    db.session.commit()
+    return jsonify({"status": "record deleted"})
 
 
 @app.errorhandler(404)
