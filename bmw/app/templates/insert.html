@@ -1,47 +1,44 @@
 {% extends "base.html" %}
 
 {% block title %}
-    r/BMW/ Post Search
+    r/BMW/ Insert
 {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>Search BY ID</h1>
-        </div>
-        <div class="row">
-            <h1><small>Search</small></h1>
-            <form class="form-inline">
+            <h1>Insert New Record</h1>
+            <form id="bmw-form">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="user-id" placeholder="User ID">
-                    <button id="user-id-submit" type="submit" class="btn btn-default">Submit</button>
+                    <label for="score">Score</label>
+                    <input type="text" class="form-control" id="score">
                 </div>
+                <div class="form-group">
+                    <label for="domain">Domain</label>
+                    <input type="text" class="form-control" id="domain">
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="form-group">
+                    <label for="upvote">Upvote</label>
+                    <input type="text" class="form-control" id="upvote">
+                </div>
+                <div class="form-group">
+                    <label for="downvote">Downvote</label>
+                    <input type="text" class="form-control" id="downvote">
+                </div>
+                <div class="form-group">
+                    <label for="comments">Comments</label>
+                    <input type="text" class="form-control" id="comments">
+                </div>
+              <button id="add-bmw" type="submit" class="btn btn-default">Submit</button>
             </form>
-        </div>
-        <div class="row">
-            <h1><small>Results</small></h1>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Author</th>
-                        <th>Title</th>
-                        <th>Comments</th>
-                        <th>Score</th>
-                        <th>Up Votes</th>
-                        <th>Down Votes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="author"></td>
-                        <td id="title"></td>
-                        <td id="comments"></td>
-                        <td id="score"></td>
-                        <td id="upvotes"></td>
-                        <td id="downvotes"></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 {% endblock %}
@@ -49,4 +46,58 @@
 {% block jsFiles %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script>
+        $("#add-bmw").click(function (e) {
+            //e.preventDefault();
+            var formData = {
+                "date": Math.round(+new Date() / 1000),
+                "score": parseInt($("#score").val()),
+                "domain": $("#domain").val(),
+                "title": $("#title").val(),
+                "author": $("#author").val(),
+                "upVote": parseInt($("#upvote").val()),
+                "downVote": parseInt($("#downvote").val()),
+                "comments": parseInt($("#comments").val())
+            };
+
+            var request = $.ajax({
+                url: "/bmw/api/",
+                method: "POST",
+                contentType:"application/json",
+                data: JSON.stringify(formData),
+                dataType: "html"
+            });
+
+            request.done(function (redditData) {
+                alert("added!");
+                console.log(redditData);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                console.log(jqXHR);
+            });
+        });
+        function onlyInts(identifier) {
+            $(identifier).keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+        }
+        onlyInts("#score");
+        onlyInts("#upvote");
+        onlyInts("#downvote");
+        onlyInts("#comments");
+    </script>
 {% endblock %}
