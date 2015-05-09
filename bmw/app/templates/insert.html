@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}
+    r/BMW/ Post Search
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Insert New Record</h1>
+            <form id="bmw-form">
+                <div class="form-group">
+                    <label for="score">Score</label>
+                    <input type="text" class="form-control" id="score">
+                </div>
+                <div class="form-group">
+                    <label for="domain">Domain</label>
+                    <input type="text" class="form-control" id="domain">
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="form-group">
+                    <label for="upvote">Upvote</label>
+                    <input type="text" class="form-control" id="upvote">
+                </div>
+                <div class="form-group">
+                    <label for="downvote">Downvote</label>
+                    <input type="text" class="form-control" id="downvote">
+                </div>
+                <div class="form-group">
+                    <label for="comments">Comments</label>
+                    <input type="text" class="form-control" id="comments">
+                </div>
+              <button id="add-bmw" type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsFiles %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script>
+        $("#add-bmw").click(function (e) {
+            e.preventDefault();
+            var request = $.ajax({
+                url: "/bmw/api/",
+                method: "POST",
+                data: {
+                    'date': '123',//Math.round(+new Date()/1000)
+                    'score': $("#score").val(),
+                    'domain': $("#domain").val(),
+                    'title': $("#title").val(),
+                    'author': $("#author").val(),
+                    'upVote': $("#upvote").val(),
+                    'downVote': $("#downvote").val(),
+                    'comments': $("#comments").val()
+                },
+                dataType: "json"
+            });
+
+            request.done(function (redditData) {
+                console.log(redditData);
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                console.log(jqXHR);
+                console.log("Delete Error: No ID");
+            });
+        });
+    </script>
+{% endblock %}

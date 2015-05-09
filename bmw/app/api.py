@@ -69,6 +69,11 @@ def get_student():
     return render_template('singlepage.html')
 
 
+@app.route('/bmw/insert/', methods=['GET'])
+def insert_record():
+    return render_template('insert.html')
+
+
 @app.route('/bmw/mostcomments/', methods=['GET'])
 def most_comments():
     bmw = []
@@ -119,7 +124,7 @@ def new_record():
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({"status": "record added"}), 201, {'Location': post.get_url()}
+    return jsonify({"status": "record added"})#, 201, {'Location': post.get_url()}
 
 
 @app.route('/bmw/api/<int:user_id>', methods=['PUT'])
