@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    r/BMW/ Post Search
+    r/BMW/ Insert
 {% endblock %}
 
 {% block body %}
@@ -49,20 +49,23 @@
     <script>
         $("#add-bmw").click(function (e) {
             e.preventDefault();
+            var formData = {
+                "date": Math.round(+new Date() / 1000),
+                "score": parseInt($("#score").val()),
+                "domain": $("#domain").val(),
+                "title": $("#title").val(),
+                "author": $("#author").val(),
+                "upVote": parseInt($("#upvote").val()),
+                "downVote": parseInt($("#downvote").val()),
+                "comments": parseInt($("#comments").val())
+            };
+
             var request = $.ajax({
                 url: "/bmw/api/",
                 method: "POST",
-                data: {
-                    'date': '123',//Math.round(+new Date()/1000)
-                    'score': $("#score").val(),
-                    'domain': $("#domain").val(),
-                    'title': $("#title").val(),
-                    'author': $("#author").val(),
-                    'upVote': $("#upvote").val(),
-                    'downVote': $("#downvote").val(),
-                    'comments': $("#comments").val()
-                },
-                dataType: "json"
+                contentType:"application/json",
+                data: JSON.stringify(formData),
+                dataType: "html"
             });
 
             request.done(function (redditData) {
@@ -75,5 +78,26 @@
                 console.log("Delete Error: No ID");
             });
         });
+        function onlyInts(identifier) {
+            $(identifier).keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+        }
+        onlyInts("#score");
+        onlyInts("#upvote");
+        onlyInts("#downvote");
+        onlyInts("#comments");
     </script>
 {% endblock %}

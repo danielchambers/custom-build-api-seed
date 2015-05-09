@@ -124,7 +124,7 @@ def new_record():
     post.import_data(request.json)
     db.session.add(post)
     db.session.commit()
-    return jsonify({"status": "record added"})#, 201, {'Location': post.get_url()}
+    return jsonify({"status": "record added"}), 201
 
 
 @app.route('/bmw/api/<int:user_id>', methods=['PUT'])
