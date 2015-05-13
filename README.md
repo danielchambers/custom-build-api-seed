@@ -1,3 +1,3 @@
-CS18 Spring 2014
+CS18 Spring 2015
 
-Custom APIs using Flask
+Custom API using Flask
